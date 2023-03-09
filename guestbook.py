@@ -26,6 +26,12 @@ class GuestBook:
         
         return entries
 
+    def edit(self, key, note):
+        self.notes[key] = note
+
+    def delete(self, key):
+        self.notes.pop(key)
+
     def __del__(self):
         with open('guestbook.data', 'w') as fout:
             json.dump(self.notes, fout)
