@@ -18,7 +18,7 @@ class GuestBook:
 
     def new(self, note):
         if not self.notes:
-            self.notes[0] = note
+            self.notes[1] = note
         else:
             self.notes[max(self.notes.keys()) + 1] = note
 
@@ -26,14 +26,16 @@ class GuestBook:
         entries = ''
 
         for k, v in self.notes.items():
-            entries += f'{k}: {v}\n'
+            if not v == '':
+                entries += f'{k}: {v}\n'
+
         return entries
 
     def edit(self, key, note):
         self.notes[key] = note
 
     def delete(self, key):
-        self.notes.pop(key)
+        self.notes[key] = ''
     
     def export(self):
         return self.notes
@@ -60,7 +62,7 @@ def main(args):
             
         if args[1] == 'delete':
             try:
-                book.notes.pop(int(args[2]))
+                book.delete(args[2])
             except Exception as e:
                 print(f'Note {e} not found..')
     else:
