@@ -32,12 +32,21 @@ class GuestBook:
         return entries
 
     def edit(self, key, note):
-        self.notes[key] = note
+        """
+        Edits the n newest note.
+        """
+        self.notes[len(self.notes)-int(key)+1] = note
 
     def delete(self, key):
+        """
+        Deletes notes from n
+        """
         self.notes[key] = ''
     
     def export(self):
+        """
+        Returns a dict
+        """
         return self.notes
 
     def __del__(self):
