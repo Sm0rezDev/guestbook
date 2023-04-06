@@ -5,54 +5,52 @@ import json
 class GuestBook:
 
     def __init__(self):
-        self.notes = {}
+        self.notes = []
 
         try:
-            with open('guestbook.data', 'r') as fin:
-                self.notes = json.load(fin)
-
-            self.notes = {int(k): v for k, v in self.notes.items()}
+            with open('guestbook.data', 'r', encoding='utf8') as fin:
+                line = fin.read()
+                self.notes = line.splitlines()
 
         except FileNotFoundError:
             pass
 
     def new(self, note):
-        if not self.notes:
-            self.notes[1] = note
-        else:
-            self.notes[max(self.notes.keys()) + 1] = note
+        self.notes.append(note)
 
     def entries(self):
-        entries = ''
-
-        for k, v in self.notes.items():
-            if not v == '':
-                entries += f'{k}: {v}\n'
-
-        return entries
+        for idx, note in enumerate(self.notes):
+            print(f'{idx}: {note}')
 
     def edit(self, key, note):
         """
         Edits the n newest note.
         """
-        self.notes[len(self.notes)-int(key)+1] = note
+        self.notes[-key] = note
 
     def delete(self, key):
         """
         Deletes notes from n
         """
-        self.notes[key] = ''
+        del self.notes[-key]
     
     def export(self):
         """
         Returns a dict
         """
-        return self.notes
+        note_dict = {}
+        for idx, note in enumerate(self.notes):
+            note_dict.
+
 
     def __del__(self):
-        with open('guestbook.data', 'w') as fout:
-            json.dump(self.notes, fout)
+        try:
+            with open('guestbook.data', 'w', encoding='utf8') as fout:
+                for note in self.notes:
+                    fout.writelines(f'{note}\n')
 
+        except FileNotFoundError:
+            pass
 
 def main(args):
 
@@ -67,17 +65,14 @@ def main(args):
             book.new(args[2])
 
         if args[1] == 'edit':
-            book.edit(args[2], args[3])
+            book.edit(int(args[2]), args[3])
             
         if args[1] == 'delete':
-            try:
-                book.delete(args[2])
-            except Exception as e:
-                print(f'Note {e} not found..')
+            book.delete(int(args[2]))
     else:
 
         if args[1] == 'list':
-            print(book.entries())
+            book.entries()
         
         if args[1] == 'export':
             print(book.export())
