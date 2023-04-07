@@ -29,8 +29,11 @@ class GuestBook:
         note_length = len(self.notes)
         
         if not note_length == 0:
+            _entries = ''
             for idx, note in enumerate(self.notes):
-                return f'{note_length - idx}: {note}'
+                _entries += f'{note_length - idx}: {note}\n'
+                
+            return _entries
         else:
             return 'Notebook empty.'
 
@@ -94,7 +97,7 @@ def main(args):
     else:
 
         if args[1] == 'list':
-            book.entries()
+            print(book.entries())
 
         if args[1] == 'export':
             print(book.export())
