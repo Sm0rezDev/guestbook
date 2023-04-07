@@ -16,11 +16,23 @@ class GuestBook:
             pass
 
     def new(self, note):
+        """
+        Adds new note to list.
+        """
         self.notes.append(note)
 
     def entries(self):
-        for idx, note in enumerate(self.notes):
-            print(f'{idx}: {note}')
+        """
+        Prints contents in notes to terminal. reversed index order except
+        note content.
+        """
+        note_length = len(self.notes)
+        
+        if not note_length == 0:
+            for idx, note in enumerate(self.notes):
+                return f'{note_length - idx}: {note}'
+        else:
+            return 'Notebook empty.'
 
     def edit(self, key, note):
         """
@@ -30,25 +42,33 @@ class GuestBook:
 
     def delete(self, key):
         """
-        Deletes notes from n
+        Deletes notes from n index
         """
-        del self.notes[-key]
-    
+        if key >= 0:
+            del self.notes[-key]
+        else:
+            print('Negative number not allowed!')
+
+    def __list_to_dict(self):
+        """
+        Converts a list to a dictionary.
+        """
+        _dict = {}
+        _dict.update({
+            f'{idx}': f'{note}' for idx, note in enumerate(self.notes)
+        })
+        return _dict
+
     def export(self):
         """
-        Returns a dict
+        Returns notes as json format.
         """
-        note_dict = {}
-        for idx, note in enumerate(self.notes):
-            note_dict.update({f'{idx}': f'{note}'})
-
-        return note_dict
+        return json.dumps(self.__list_to_dict())
 
     def __del__(self):
         try:
             with open('guestbook.data', 'w', encoding='utf8') as fout:
-                for note in self.notes:
-                    fout.writelines(f'{note}\n')
+                fout.writelines(f'{note}\n' for note in self.notes)
 
         except FileNotFoundError:
             pass
@@ -68,17 +88,17 @@ def main(args):
 
         if args[1] == 'edit':
             book.edit(int(args[2]), args[3])
-            
+
         if args[1] == 'delete':
             book.delete(int(args[2]))
     else:
 
         if args[1] == 'list':
             book.entries()
-        
+
         if args[1] == 'export':
             print(book.export())
-        
+
 
 if __name__ == '__main__':
     main(sys.argv)
