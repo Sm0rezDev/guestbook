@@ -40,8 +40,9 @@ class GuestBook:
         """
         note_dict = {}
         for idx, note in enumerate(self.notes):
-            note_dict.
+            note_dict.update({f'{idx}': f'{note}'})
 
+        return note_dict
 
     def __del__(self):
         try:
@@ -51,6 +52,7 @@ class GuestBook:
 
         except FileNotFoundError:
             pass
+
 
 def main(args):
 
