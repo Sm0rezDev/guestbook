@@ -10,7 +10,7 @@ class TestNotebook(unittest.TestCase):
     def test_entries(self):
         self.book.new('This is my note')
         results = self.book.entries()
-        self.assertEqual(results, '1: This is my note')
+        self.assertEqual(results, '1: This is my note\n')
 
     def test_edit(self):
         self.book.new('This is my note')
@@ -18,7 +18,7 @@ class TestNotebook(unittest.TestCase):
         self.book.edit(1, 'This is an edit')
 
         results = self.book.entries()
-        self.assertEqual(results, '1: This is an edit')
+        self.assertEqual(results, '1: This is an edit\n')
 
     def tearDown(self):
         self.book.notes.clear()
